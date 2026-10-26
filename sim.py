@@ -24,23 +24,41 @@ test_waves = [wave_list[i] for i in rand_idx[n_train:]]
 
 network = Network(1, hidden_size, 1)
 
-for i in range(len(train_waves)):
-    print(f"Training on task {i}")
-    network.fit(train_waves[i])
-    y_predictions = []
 
-    with torch.no_grad():
-        x = torch.tensor(train_waves[i].x_cords, dtype=torch.float32).unsqueeze(1)
-        y_predictions = network(x).squeeze(1).numpy()
-        
-    xpoints = np.array(train_waves[i].x_cords)
-    ypoints = np.array(train_waves[i].y_cords)
+network.fit(train_waves)
+
+for i, losses in enumerate(network.losses_by_wave):
+    plt.plot(losses, color='red',
+             label="Without Resetting Weights" if i == 0 else None)
+
+network.reset_losses()
+network.reset_params()
+
+network.fit_reset_weights(train_waves)
+
+for i, losses in enumerate(network.losses_by_wave):
+    plt.plot(losses, color='blue',
+             label="Reset Weights Every Task" if i == 0 else None)
+
+plt.legend()
+plt.show()
+
+y_predictions = []
+
+# Testing on the final training wave used by fit_reset_weights
+with torch.no_grad():
+    wave = train_waves[-1]
+    x = torch.tensor(wave.x_cords, dtype=torch.float32).unsqueeze(1)
+    y_predictions = network(x).squeeze(1).numpy()
+    
+    xpoints = np.array(wave.x_cords)
+    ypoints = np.array(wave.y_cords)
 
     plt.plot(xpoints, ypoints)
     plt.plot(xpoints, y_predictions)
     plt.show()
 
-
+# Testing on an unseen wave
 wave = test_waves[1]
 y_predictions = []
 
