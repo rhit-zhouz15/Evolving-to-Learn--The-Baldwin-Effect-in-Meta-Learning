@@ -32,7 +32,7 @@ for i, losses in enumerate(network.losses_by_wave):
              label="Without Resetting Weights" if i == 0 else None)
 
 network.reset_losses()
-network.reset_params()
+network.reset_all()
 
 network.fit_reset_weights(train_waves)
 

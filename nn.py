@@ -43,7 +43,7 @@ class Network(nn.Module):
 
     def fit_reset_weights(self, wave_list):
             for i in range(len(wave_list)):
-                self.network.load_state_dict(self.initial_params)
+                self.reset_all()
                 wave = wave_list[i]
                 x_cords = torch.tensor(np.concatenate([wave.x_cords]), dtype=torch.float32).unsqueeze(1)
                 y_cords = torch.tensor(np.concatenate([wave.y_cords]), dtype=torch.float32).unsqueeze(1)
@@ -62,6 +62,10 @@ class Network(nn.Module):
     def reset_losses(self):
         self.losses_by_wave = []
 
-    def reset_params(self):
-        self.network.load_state_dict(self.initial_params)
+    def reset_optimizer(self):
+        self.optimizer = torch.optim.Adam(self.parameters(), lr=0.01)
+
+    def reset_all(self):
+        self.network.load_state_dict(copy.deepcopy(self.initial_params))
+        self.reset_optimizer()
                 
