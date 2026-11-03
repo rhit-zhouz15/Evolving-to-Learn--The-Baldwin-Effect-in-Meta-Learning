@@ -31,13 +31,13 @@ class Network(nn.Module):
             y_cords = torch.tensor(np.concatenate([wave.y_cords]), dtype=torch.float32).unsqueeze(1)
             losses = []
 
-            for epoch in range(100):
+            for epoch in range(20):
                 self.optimizer.zero_grad()
                 loss = self.loss(self.network(x_cords), y_cords)
                 losses.append(loss.item())
                 loss.backward()
                 self.optimizer.step()
-                if epoch % 10 == 0:
+                if epoch % 300 == 0:
                     print(f"Epoch {epoch}, Loss: {loss.item():.6f}")
             self.losses_by_wave.append(losses)
 

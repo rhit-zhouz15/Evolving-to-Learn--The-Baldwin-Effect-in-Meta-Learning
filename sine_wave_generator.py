@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import matplotlib.pyplot as plt
 
 class SineWave():
     def __init__(self, num_points, rng):
@@ -10,4 +11,9 @@ class SineWave():
         self.x_cords = np.linspace(0, 2*np.pi, num_points)
         self.y_cords = self.a * np.sin(self.b * (self.x_cords - self.c)) + self.d
 
-    
+def plot_sine_wave(wave):
+    plt.plot(wave.x_cords, wave.y_cords)
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.title("Generated sine wave")
+    plt.show()
