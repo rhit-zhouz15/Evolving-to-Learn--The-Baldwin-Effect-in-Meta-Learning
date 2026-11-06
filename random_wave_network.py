@@ -11,7 +11,7 @@ from sine_wave_generator import SineWave
 NUM_WAVES = 3
 NUM_POINTS_PER_WAVE = 100
 HIDDEN_SIZE = 40
-EPOCHS = 1000
+EPOCHS = 100
 
 
 def train_on_points(network, x_points, y_points, epochs, log_interval=None):
@@ -86,7 +86,7 @@ def plot_results(waves, random_networks):
 
 
 def main():
-    rng = np.random.default_rng(2)
+    rng = np.random.default_rng(55)
     waves = [
         SineWave(NUM_POINTS_PER_WAVE, rng)
         for _ in range(NUM_WAVES)

@@ -104,7 +104,7 @@ def plot_adapted_results(waves, pooled_network, adapted_networks):
 
 
 def main():
-    rng = np.random.default_rng(2)
+    rng = np.random.default_rng(55)
     waves = [
         SineWave(NUM_POINTS_PER_WAVE, rng)
         for _ in range(NUM_WAVES)
