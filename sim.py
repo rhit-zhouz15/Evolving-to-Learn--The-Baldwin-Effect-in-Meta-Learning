@@ -1,18 +1,17 @@
 from nn import Network
-from sine_wave_generator import SineWave
+from sine_wave_generator import SineWave, pool_sine_wave_points
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from torch.utils.data import TensorDataset
 
 def to_dataset(wave_list):
-    x = np.concatenate([wave.x_cords for wave in wave_list])
-    y = np.concatenate([wave.y_cords for wave in wave_list])
+    x, y = pool_sine_wave_points(wave_list)
     return TensorDataset(torch.tensor(x, dtype=torch.float32).unsqueeze(1),
                          torch.tensor(y, dtype=torch.float32).unsqueeze(1))
 
 num_points = 100
-hidden_size = 20
+hidden_size = 40
 rng = np.random.default_rng(1)
 
 wave_list = [SineWave(num_points, rng) for _ in range(10)]
@@ -31,14 +30,14 @@ for i, losses in enumerate(network.losses_by_wave):
     plt.plot(losses, color='red',
              label="Without Resetting Weights" if i == 0 else None)
 
-network.reset_losses()
-network.reset_all()
+# network.reset_losses()
+# network.reset_all()
 
-network.fit_reset_weights(train_waves)
+# network.fit_reset_weights(train_waves)
 
-for i, losses in enumerate(network.losses_by_wave):
-    plt.plot(losses, color='blue',
-             label="Reset Weights Every Task" if i == 0 else None)
+# for i, losses in enumerate(network.losses_by_wave):
+#     plt.plot(losses, color='blue',
+#              label="Reset Weights Every Task" if i == 0 else None)
 
 plt.legend()
 plt.show()

@@ -1,19 +1,19 @@
 from nn import Network
-from sine_wave_generator import SineWave, plot_sine_wave
+from sine_wave_generator import SineWave, plot_sine_wave, pool_sine_wave_points
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from torch.utils.data import TensorDataset
 
 def to_dataset(wave_list):
-    x = np.concatenate([wave.x_cords for wave in wave_list])
-    y = np.concatenate([wave.y_cords for wave in wave_list])
+    x, y = pool_sine_wave_points(wave_list)
     return TensorDataset(torch.tensor(x, dtype=torch.float32).unsqueeze(1),
                          torch.tensor(y, dtype=torch.float32).unsqueeze(1))
 
 num_points = 10
 hidden_size = 40
-rng = np.random.default_rng(5)
+rng = np.random.default_rng(2)
+torch.manual_seed(1)
 
 wave_list = [SineWave(num_points, rng) for _ in range(3)]
 plot_sine_wave(wave_list[0])

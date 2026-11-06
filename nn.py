@@ -17,7 +17,7 @@ class Network(nn.Module):
         )
 
         self.loss = nn.MSELoss()
-        self.optimizer = torch.optim.SGD(self.parameters(), lr=0.01)
+        self.optimizer = torch.optim.SGD(self.parameters(), lr=0.1)
         self.initial_params = copy.deepcopy(self.network.state_dict())
         self.losses_by_wave = []
 
@@ -49,13 +49,13 @@ class Network(nn.Module):
                 y_cords = torch.tensor(np.concatenate([wave.y_cords]), dtype=torch.float32).unsqueeze(1)
                 losses = []
     
-                for epoch in range(100):
+                for epoch in range(5):
                     self.optimizer.zero_grad()
                     loss = self.loss(self.network(x_cords), y_cords)
                     losses.append(loss.item())
                     loss.backward()
                     self.optimizer.step()
-                    if epoch % 10 == 0:
+                    if epoch % 2 == 0:
                         print(f"Epoch {epoch}, Loss: {loss.item():.6f}")
                 self.losses_by_wave.append(losses)
 
@@ -63,7 +63,7 @@ class Network(nn.Module):
         self.losses_by_wave = []
 
     def reset_optimizer(self):
-        self.optimizer = torch.optim.Adam(self.parameters(), lr=0.01)
+        self.optimizer = torch.optim.SGD(self.parameters(), lr=0.1)
 
     def reset_all(self):
         self.network.load_state_dict(copy.deepcopy(self.initial_params))
