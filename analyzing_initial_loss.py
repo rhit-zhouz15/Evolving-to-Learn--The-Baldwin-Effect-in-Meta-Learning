@@ -11,16 +11,16 @@ def to_dataset(wave_list):
     return TensorDataset(torch.tensor(x, dtype=torch.float32).unsqueeze(1),
                          torch.tensor(y, dtype=torch.float32).unsqueeze(1))
 
-num_points = 100
+num_points = 10
 hidden_size = 40
-rng = np.random.default_rng(1)
+rng = np.random.default_rng(5)
 
 wave_list = [SineWave(num_points, rng) for _ in range(3)]
 plot_sine_wave(wave_list[0])
 plot_sine_wave(wave_list[1])
 plot_sine_wave(wave_list[2])
 
-networks = [Network(1, hidden_size, 1) for _ in range(10)]
+networks = [Network(1, hidden_size, 1) for _ in range(100)]
 initial_losses_task_1 = []
 initial_losses_task_2 = []
 initial_losses_task_3 = []
